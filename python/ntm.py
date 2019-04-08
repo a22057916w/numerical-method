@@ -33,3 +33,5 @@ if __name__ == "__main__":
 
         df = pd.DataFrame(table_list)
         print(p)
+
+    os.system("pause")
