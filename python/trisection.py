@@ -15,8 +15,8 @@ if __name__ == "__main__":
         TOL = TOLs[i]
         a, b = intervals[i]     # interval [a, b]
 
-        fa = f.subs(x, a)
-        fb = f.subs(x, b)
+        fa = f.subs("x", a)
+        fb = f.subs("x", b)
 
         if fa * fb > 0:         # check if f(a) * f(b) < 0
             print("ERROR: f(a) * f(b) > 0 (function No." + str(i) + ")")
@@ -24,15 +24,15 @@ if __name__ == "__main__":
 
         root = None
         table_list = []      # result table
-        
+
         while abs(b - a) > TOL:
             p1 = a + (b - a) / 3
             p2 = a + (b - a) / 3 * 2
 
-            fa = f.subs(x, a)
-            fb = f.subs(x, b)
-            fp1 = f.subs(x, p1)
-            fp2 = f.subs(x, p2)
+            fa = f.subs("x", a)
+            fb = f.subs("x", b)
+            fp1 = f.subs("x", p1)
+            fp2 = f.subs("x", p2)
 
             if fp1 * fp2 > 0:   # f(p1) and f(p2) are equal sign
                 if fp1 * fa < 0:
