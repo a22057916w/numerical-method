@@ -7,56 +7,29 @@ import os
 
 if __name__ == "__main__":
     v = [729, 1500, -72]    # testcase
-    TOLs = [0.0005, 0.0001, 0.0001]
 
     for i in range(0, 3):
         if v[i] < 0:
-            print("ERROR: f(a) * f(b) > 0 (function No." + str(i) + ")")
+            print("ERROR: v < 0 (function No." + str(i) + ")")
             continue
 
-        f = sympify("x**2 - " + str(v[i]))      # functions
-        TOL = TOLs[i]
-
-        fa = f.subs("x", a)
-        fb = f.subs("x", b)
-
+        f = sympify("x**2 - " + str(int(v[i])))      # functions
+        print(f)
         table_list = []      # result table
 
-        p = oo       # set default value as infinity
-        prev_p = v  # set Pn-1 default value
-        while abs(p - prev_p) > TOL:
-            p = prev_p - fprev_p / fprev_p.diff(x)
+        p = v[i]       # set default value as v
+        prev_p = 0  # set Pn-1 default value as infinity
+
+        while abs((p - prev_p) / p) > 0.0001:
             prev_p = p
-            p = float(a - (fa * (b - a) /(fb - fa)))    # secant point where intersects x = 0
-            fa = f.subs("x", a)
-            fb = f.subs("x", b)
-            fp = f.subs("x", p)
-
-            # check if an endpoint stays the same for 3 times
-            if fac > 3:
-                fb /= 2     # f(b)/2 if b stays the same for 3 times
-                fac = 0
-            if fbc > 3:
-                fa /= 2
-                fbc = 0
-
-            if fp * fa < 0:
-                fbc += 1    # add 1 for b being changed
-                fac = 0     # set 0 if b change (changes of b must be continuous)
-                b = p
-                fb = fp
-            else:
-                fac += 1
-                fbc = 0
-                a = p
-                fa = fp
+            fprev_p = f.subs("x", prev_p)
+            x = Symbol("x")
+            p = float(prev_p - fprev_p / f.diff(x).subs("x", prev_p))
 
             table_list.append({
-                "a": a,
-                "b": b,
                 "p": p,
-                "f(p)": fp
+                "f(p)": f.subs("x", p)
             })
 
         df = pd.DataFrame(table_list)
-        print(df)
+        print(p)
