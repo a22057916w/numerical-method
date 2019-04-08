@@ -22,7 +22,6 @@ if __name__ == "__main__":
             print("ERROR: f(a) * f(b) > 0 (function No." + str(i) + ")")
             continue
 
-        root = None
         table_list = []      # result table
 
         while abs(b - a) > TOL:
