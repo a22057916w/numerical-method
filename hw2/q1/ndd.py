@@ -1,9 +1,9 @@
 from sympy import *
-#import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
 import math
 import os
+import re
 
 def dividedDiffTable(x, y, tlen):
     row = col = tlen
@@ -41,7 +41,7 @@ def getTable(DD):
                 if j > 0:
                     name += ", "
                 name += "x" + str(j)
-            name += "...x" + str(i) + "]"
+            name += ", ...,x" + str(i) + "]"
         col_names.append(name)
 
     df = pd.DataFrame(DD)
@@ -61,27 +61,39 @@ def poly(DD):
     return px
 
 def sympy_plot(px, interval):
-
+    print(interval)
     a, b = interval
     f = sympify(px)
     x = symbols("x")
     plot(f,(x ,a, b))   # using sympy's plot function
 
 if __name__ == "__main__":
-    fp = open("testcase", "r")
-    line = fp.readline()
-    print(line)
 
-    x = [5, 6, 9, 11]
-    y = [12, 13, 14, 16]
-    intervals = [(0.9, 13.3)]
+    # read testcase from file
+    fp = open("hw2/q1/testcase.txt", "r")
+    n = int(fp.readline().replace("\n", ""))  # first line which indicates the case numbers
 
-    # getting DD data
-    DD = dividedDiffTable(x, y, len(x))   # return a two dim list
-    DDtable = getTable(DD)    # return a DataFrame
-    px = poly(DD)   # return a string
+    for i in range(n):
+        case = []
 
-    # print out the results
-    print("The Newton's divided-differences table is :\n", DDtable, "\n")
-    print("The polynomial is:\n", px, "\n")
-    sympy_plot(px, intervals[0])
+        for j in range(3):
+            line = fp.readline()
+            print(line)
+            new_line = line.replace("\n", "")
+            nums = re.split(" |, ", new_line)
+            case.append(nums)
+        
+        print(case)
+        x = list(map(eval,case[0]))
+        y = list(map(eval,case[1]))
+        intervals = tuple(map(eval,case[2]))
+
+        # getting DD data
+        DD = dividedDiffTable(x, y, len(x))   # return a two dim list
+        DDtable = getTable(DD)    # return a DataFrame
+        px = poly(DD)   # return a string
+
+        # print out the results
+        print("The Newton's divided-differences table is :\n", DDtable, "\n")
+        print("The polynomial is:\n", px, "\n")
+        sympy_plot(px, intervals)
