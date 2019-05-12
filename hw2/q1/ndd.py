@@ -70,7 +70,7 @@ def sympy_plot(px, interval):
 if __name__ == "__main__":
 
     # read testcase from file
-    fp = open("hw2/q1/testcase.txt", "r")
+    fp = open("testcase.txt", "r")
     n = int(fp.readline().replace("\n", ""))  # first line which indicates the case numbers
 
     for i in range(n):
@@ -82,7 +82,7 @@ if __name__ == "__main__":
             new_line = line.replace("\n", "")
             nums = re.split(" |, ", new_line)
             case.append(nums)
-        
+
         print(case)
         x = list(map(eval,case[0]))
         y = list(map(eval,case[1]))
