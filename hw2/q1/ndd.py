@@ -13,7 +13,7 @@ def dividedDiffTable(x, y, tlen):
     for i in range(row):
         DD[i][0] = y[i]
 
-    # calculate the difference
+    # calculate the differences
     for i in range(1, col):
         for j in range(row - i):
             DD[j][i] = (DD[j + 1][i - 1] - DD[j][i - 1]) / (x[j + i] - x[j])
@@ -101,3 +101,5 @@ if __name__ == "__main__":
         print("The Newton's divided-differences table is :\n", DDtable, "\n")
         print("The polynomial is:\n", px, "\n")
         sympy_plot(px, intervals)
+
+    os.system("pause")

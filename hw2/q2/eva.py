@@ -55,3 +55,5 @@ if __name__ == "__main__":
         print("Test case " + str(i + 1) + ":")
         value = eval(input("Please enter a number to evaluate:"))   # user input
         print("The value at " + str(value) + " is:\n", Horner(DD, x, value))    # print out the results
+
+    os.system("pause")
