@@ -71,8 +71,8 @@ def sympy_plot(px, interval):
 if __name__ == "__main__":
 
     # read testcase from file
-    #fp = open("testcase.txt", "r")     # test using cmd
-    fp = open("hw2/q1/testcase.txt", "r")   # test using Atom(IDE)
+    fp = open("testcase.txt", "r")     # test using cmd
+    #fp = open("hw2/q1/testcase.txt", "r")   # test using Atom(IDE)
     n = int(fp.readline().replace("\n", ""))  # first line which indicates the case numbers
 
     for i in range(n):
