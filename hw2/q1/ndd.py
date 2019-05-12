@@ -61,7 +61,6 @@ def poly(DD):
     return px
 
 def sympy_plot(px, interval):
-    print(interval)
     a, b = interval
     f = sympify(px)
     x = symbols("x")
@@ -70,23 +69,24 @@ def sympy_plot(px, interval):
 if __name__ == "__main__":
 
     # read testcase from file
-    fp = open("testcase.txt", "r")
+    fp = open("hw2/q1/testcase.txt", "r")
     n = int(fp.readline().replace("\n", ""))  # first line which indicates the case numbers
 
     for i in range(n):
-        case = []
+        case = []   # to load the list of figures in a line
 
         for j in range(3):
             line = fp.readline()
-            print(line)
+            # parsing data
             new_line = line.replace("\n", "")
             nums = re.split(" |, ", new_line)
+            # load the data into case
             case.append(nums)
 
-        print(case)
-        x = list(map(eval,case[0]))
-        y = list(map(eval,case[1]))
-        intervals = tuple(map(eval,case[2]))
+        # assign testcase to variables
+        x = list(map(eval, case[0]))
+        y = list(map(eval, case[1]))
+        intervals = tuple(map(eval, case[2]))
 
         # getting DD data
         DD = dividedDiffTable(x, y, len(x))   # return a two dim list
