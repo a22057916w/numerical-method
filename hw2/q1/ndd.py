@@ -64,12 +64,15 @@ def sympy_plot(px, interval):
     a, b = interval
     f = sympify(px)
     x = symbols("x")
+
+    print("The function between [" + str(a) + ", " + str(b) + "] is:")
     plot(f,(x ,a, b))   # using sympy's plot function
 
 if __name__ == "__main__":
 
     # read testcase from file
-    fp = open("hw2/q1/testcase.txt", "r")
+    #fp = open("testcase.txt", "r")     # test using cmd
+    fp = open("hw2/q1/testcase.txt", "r")   # test using Atom(IDE)
     n = int(fp.readline().replace("\n", ""))  # first line which indicates the case numbers
 
     for i in range(n):
@@ -94,6 +97,7 @@ if __name__ == "__main__":
         px = poly(DD)   # return a string
 
         # print out the results
+        print("Test case " + str(i + 1) + ":")
         print("The Newton's divided-differences table is :\n", DDtable, "\n")
         print("The polynomial is:\n", px, "\n")
         sympy_plot(px, intervals)
