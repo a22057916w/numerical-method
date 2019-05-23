@@ -19,7 +19,7 @@ def getSx(x, y):
 
     for i in range(n - 1):      # get a list of S(X) in string type
         s[i] = c[0][i] + "+" + c[1][i] + "*(x-" + x[i] + ")+" + c[2][i] + "*(x-" + x[i] + ")**2+" + c[3][i] + "*(x-" + x[i] +")**3"
-        print(s[i])
+        #print(s[i])
     return s
 
 def find_all_coef(x, y):
@@ -67,13 +67,15 @@ def getCsHs(x, a):
 def draw(sx, x):
     n = len(x)
     s = len(sx)
+    print(sx)
     p = sympy_plot(sx[0], (x[0], x[0 + 1]))
-    for i in range(n - 1):
+    for i in range(1, n - 1):
         p.append(sympy_plot(sx[i], (x[i], x[i + 1]))[0])
     p.show()
 
 def sympy_plot(sx, interval):
     a, b = interval
+    print(a, b)
     f = sympify(sx)
     x = symbols("x")
 
