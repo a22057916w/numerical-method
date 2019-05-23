@@ -19,6 +19,7 @@ def getSx(x, y):
 
     for i in range(n - 1):      # get a list of S(X) in string type
         s[i] = c[0][i] + "+" + c[1][i] + "*(x-" + x[i] + ")+" + c[2][i] + "*(x-" + x[i] + ")**2+" + c[3][i] + "*(x-" + x[i] +")**3"
+        print(s[i])
     return s
 
 def find_all_coef(x, y):
@@ -32,8 +33,7 @@ def find_all_coef(x, y):
     for i in range(n - 1):
         b[i] = ((a[i + 1] - a[i]) / h[i]) - (h[i] * (2 * c[i] + c[i + 1]) / 3)
     for i in range(n - 1):
-        print(i)
-        d[i] = (c[i + 1] - c[i]) / 3 * h[i]
+        d[i] = (c[i + 1] - c[i]) / (3 * h[i])
 
     return a, b, c, d
 
@@ -45,7 +45,7 @@ def getCsHs(x, a):
     for i in range(len(h)):       # calculate all the h
         h[i] = x[i + 1] - x[i]
 
-    s, r, t, e = ([ 0 for i in range(n) ] for i in range(4))
+    s, r, t, e = ([ 0 for i in range(n - 1) ] for i in range(4))
 
     # s[0] = c[0] = e[0] = 0, s[n - 1] = c[n -1] = e[n - 1] = 0
     for i in range(1, n - 1):   # initialize s, r, and t
@@ -53,25 +53,22 @@ def getCsHs(x, a):
         e[i] = (3 * (a[i + 1] - a[i]) / h[i]) - (3 * (a[i] - a[i - 1]) / h[i - 1])
         t[i] = r[i] = h[i]
     # solving the tridiagonal systems
-    for i in range(2, n - 2):
+    for i in range(2, n - 1):
         s[i] = s[i] - (r[i - 1] / s[i - 1]) * t[i - 1]
         e[i] = e[i] - (r[i - 1] / s[i - 1]) * e[i - 1]
 
-
+    # back subsititution
     c[n - 2] = e[n - 2] / s[n - 2]
     for i in range(n - 3, 0, -1):
-        #print(i)
-        c[i] = (e[i] - t[i] * c[i + 1])
+        c[i] = (e[i] - t[i] * c[i + 1]) / s[i]
 
     return c, h
 
 def draw(sx, x):
     n = len(x)
     s = len(sx)
-    #print(s, n)
     p = sympy_plot(sx[0], (x[0], x[0 + 1]))
     for i in range(n - 1):
-        #print(i)
         p.append(sympy_plot(sx[i], (x[i], x[i + 1]))[0])
     p.show()
 
@@ -87,7 +84,7 @@ if __name__ == "__main__":
 
     # read testcase from file
     #fp = open("testcase.txt", "r")     # test using cmd
-    fp = open("hw2/q1/testcase.txt", "r")   # test using Atom(editor)
+    fp = open("hw3/testcase.txt", "r")   # test using Atom(editor)
     n = int(fp.readline().replace("\n", ""))  # first line which indicates the case numbers
 
     for i in range(1):
@@ -107,9 +104,7 @@ if __name__ == "__main__":
         intervals = tuple(map(eval, case[2]))
 
         splines = [None] * (len(x) - 1)   # (points - 1) curves
-
         splines = getSx(x, y)
-        #print(len(splines))
         draw(splines, x)
 
     os.system("pause")
