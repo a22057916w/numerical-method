@@ -1,4 +1,5 @@
 from sympy import *
+import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
 import math
@@ -7,10 +8,9 @@ import re
 
 def getSx(x, y):
     n = len(x)
-
     s = [""] * (n - 1)      # (points - 1) curves
     c = [ [ 0 for i in range(n) ] for j in range(4) ]     # c stands for coefficient
-    c[0], c[1], c[2], c[3] = find_all_coef(x, y)
+    c[0], c[1], c[2], c[3] = find_all_coef(x, y)        # get as, bs, cs, ds
 
     # covert int list into string list
     for i in range(len(c)):
@@ -19,7 +19,6 @@ def getSx(x, y):
 
     for i in range(n - 1):      # get a list of S(X) in string type
         s[i] = c[0][i] + "+" + c[1][i] + "*(x-" + x[i] + ")+" + c[2][i] + "*(x-" + x[i] + ")**2+" + c[3][i] + "*(x-" + x[i] +")**3"
-        #print(s[i])
     return s
 
 def find_all_coef(x, y):
@@ -64,22 +63,28 @@ def getCsHs(x, a):
 
     return c, h
 
-def draw(sx, x):
+def draw(ogn, sx, x):
     n = len(x)
-    s = len(sx)
-    print(sx)
-    p = sympy_plot(sx[0], (x[0], x[0 + 1]))
-    for i in range(1, n - 1):
-        p.append(sympy_plot(sx[i], (x[i], x[i + 1]))[0])
-    p.show()
+    p = sympy_plot(sx[0], (x[0], x[0 + 1]), (x[0], x[n - 1]) )      # set first plot
+    for i in range(1, len(sx)):
+        p.append(sympy_plot(sx[i], (x[i], x[i + 1]), (x[0], x[len(x) - 1]) )[0])
 
-def sympy_plot(sx, interval):
-    a, b = interval
-    print(a, b)
-    f = sympify(sx)
+    plt.rcParams["figure.figsize"] = 10, 3          # set figure width and heigh by inches
+
+    if ogn:         # if exists orignal function, putit into figure
+        p1 = sympy_plot(ogn_fn, (x[0], x[n - 1]), (x[0], x[n - 1]))
+        p1[0].line_color = "r"
+        p1.extend(p)
+        p1.show()
+    else:
+        p.show()
+
+def sympy_plot(fs, interval, xlim):
+    a, b = interval     # Xj, Xj+1
+    f = sympify(fs)
     x = symbols("x")
 
-    p = plot(f,(x ,a, b), show = False)   # using sympy's plot function
+    p = plot(f,(x ,a, b), show = False, xlim = [xlim[0] - 1, xlim[1] + 1])   # using sympy's plot function
     return p
 
 if __name__ == "__main__":
@@ -89,24 +94,25 @@ if __name__ == "__main__":
     fp = open("hw3/testcase.txt", "r")   # test using Atom(editor)
     n = int(fp.readline().replace("\n", ""))  # first line which indicates the case numbers
 
-    for i in range(1):
+    ogn = ["", "1/(1 + 25*x**2)", "1/(1 + 25*x**2)"]
+
+    for i in range(n):
         case = []   # to load the list of figures in a line
 
-        for j in range(3):
+        for j in range(2):
             line = fp.readline()
             # parsing data
             new_line = line.replace("\n", "")
-            nums = re.split(" |, ", new_line)
+            line = re.split(" |, ", new_line)
             # load the data into case
-            case.append(nums)
+            case.append(line)
 
         # assign testcase to variables
         x = list(map(eval, case[0]))
         y = list(map(eval, case[1]))
-        intervals = tuple(map(eval, case[2]))
-
+              # original function
         splines = [None] * (len(x) - 1)   # (points - 1) curves
         splines = getSx(x, y)
-        draw(splines, x)
+        draw(ogn[i], splines, x)
 
     os.system("pause")
