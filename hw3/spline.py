@@ -6,6 +6,20 @@ import math
 import os
 import re
 
+def printTable(x, y):
+    c = [ [ 0 for i in range(n) ] for j in range(4) ]     # c stands for coefficient
+    c[0], c[1], c[2], c[3] = find_all_coef(x, y)        # get as, bs, cs, ds
+
+    dict = {
+        "a": c[0],
+        "b": c[1],
+        "c": c[2],
+        "d": c[3]
+    }
+
+    df = pd.DataFrame(dict)
+    print(df)
+
 def getSx(x, y):
     n = len(x)
     s = [""] * (n - 1)      # (points - 1) curves
@@ -71,8 +85,9 @@ def draw(ogn, sx, x):
 
     plt.rcParams["figure.figsize"] = 10, 3          # set figure width and heigh by inches
 
+    print("The figure is:")
     if ogn:         # if exists orignal function, putit into figure
-        p1 = sympy_plot(ogn_fn, (x[0], x[n - 1]), (x[0], x[n - 1]))
+        p1 = sympy_plot(ogn, (x[0], x[n - 1]), (x[0], x[n - 1]))
         p1[0].line_color = "r"
         p1.extend(p)
         p1.show()
@@ -90,11 +105,11 @@ def sympy_plot(fs, interval, xlim):
 if __name__ == "__main__":
 
     # read testcase from file
-    #fp = open("testcase.txt", "r")     # test using cmd
-    fp = open("hw3/testcase.txt", "r")   # test using Atom(editor)
+    fp = open("testcase.txt", "r")     # test using cmd
+    #fp = open("hw3/testcase.txt", "r")   # test using Atom(editor)
     n = int(fp.readline().replace("\n", ""))  # first line which indicates the case numbers
 
-    ogn = ["", "1/(1 + 25*x**2)", "1/(1 + 25*x**2)"]
+    ogn = ["", "1/(1 + 25*x**2)", "1/(1 + 25*x**2)", "1/(1 + 25*x**2)", "1/(1 + 25*x**2)"]
 
     for i in range(n):
         case = []   # to load the list of figures in a line
@@ -113,6 +128,10 @@ if __name__ == "__main__":
               # original function
         splines = [None] * (len(x) - 1)   # (points - 1) curves
         splines = getSx(x, y)
+
+        # print results
+        print("Case " + str(i + 1) + ":")
+        printTable(x, y)
         draw(ogn[i], splines, x)
 
     os.system("pause")
