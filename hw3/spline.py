@@ -32,7 +32,7 @@ def getSx(x, y):
     x = list(map(str, x))
 
     for i in range(n - 1):      # get a list of S(X) in string type
-        s[i] = c[0][i] + "+" + c[1][i] + "*(x-" + x[i] + ")+" + c[2][i] + "*(x-" + x[i] + ")**2+" + c[3][i] + "*(x-" + x[i] +")**3"
+        s[i] = c[0][i] + "+" + c[1][i] + "*(x-" + x[i] + ")+" + c[2][i] + "*(x-" + x[i] + ")**2+" + c[3][i] + "*(x-" + x[i] + ")**3"
     return s
 
 def find_all_coef(x, y):
@@ -86,7 +86,7 @@ def draw(ogn, sx, x):
     plt.rcParams["figure.figsize"] = 10, 3          # set figure width and heigh by inches
 
     print("The figure is:")
-    if ogn:         # if exists orignal function, putit into figure
+    if ogn:         # if exists orignal function, put it into figure
         p1 = sympy_plot(ogn, (x[0], x[n - 1]), (x[0], x[n - 1]))
         p1[0].line_color = "r"
         p1.extend(p)
